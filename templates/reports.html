@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Reports | Student Attendance System{% endblock %}
+{% block content %}
+<h1>Attendance Reports</h1>
+<p class="muted">Select a subject to see attendance totals and percentages.</p>
+<section class="panel">
+  <form method="get" class="form-grid">
+    <label>Subject
+      <select name="subject_id" required>
+        <option value="">Choose subject</option>
+        {% for subject in subjects %}<option value="{{ subject.id }}" {% if selected_subject == subject.id|string %}selected{% endif %}>{{ subject.subject_code }} — {{ subject.subject_name }}</option>{% endfor %}
+      </select>
+    </label>
+    <div class="form-action"><button type="submit">Generate Report</button></div>
+  </form>
+</section>
+{% if selected_subject %}
+<section class="panel">
+  <div class="table-wrap"><table>
+    <thead><tr><th>Roll number</th><th>Name</th><th>Total marked classes</th><th>Present</th><th>Absent</th><th>Attendance %</th></tr></thead>
+    <tbody>{% for row in report_rows %}
+      {% set total = row.total_classes or 0 %}
+      {% set present = row.present_count or 0 %}
+      {% set absent = row.absent_count or 0 %}
+      {% set percentage = (present * 100 / total) if total else 0 %}
+      <tr><td>{{ row.roll_no }}</td><td>{{ row.name }}</td><td>{{ total }}</td><td>{{ present }}</td><td>{{ absent }}</td>
+      <td><span class="percentage {% if percentage < 75 and total > 0 %}low{% endif %}">{{ "%.1f"|format(percentage) }}%</span></td></tr>
+    {% endfor %}</tbody>
+  </table></div>
+  <p class="muted small-text">Formula: Attendance percentage = (Classes Present ÷ Total Classes Marked) × 100. Students with no marked classes show 0%.</p>
+</section>
+{% endif %}
+{% endblock %}

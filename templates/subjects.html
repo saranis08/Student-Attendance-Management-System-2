@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Subjects | Student Attendance System{% endblock %}
+{% block content %}
+<h1>Subject Management</h1>
+<p class="muted">Add the subjects for which attendance will be recorded.</p>
+<section class="panel">
+  <h2>Add subject</h2>
+  <form method="post" class="form-grid">
+    <label>Subject code<input name="subject_code" required placeholder="e.g. CN301"></label>
+    <label>Subject name<input name="subject_name" required placeholder="e.g. Computer Networks"></label>
+    <div class="form-action"><button type="submit">Add Subject</button></div>
+  </form>
+</section>
+<section class="panel">
+  <h2>Subject list ({{ subjects|length }})</h2>
+  {% if subjects %}
+  <div class="table-wrap"><table>
+    <thead><tr><th>Code</th><th>Subject name</th><th>Action</th></tr></thead>
+    <tbody>{% for subject in subjects %}
+      <tr><td>{{ subject.subject_code }}</td><td>{{ subject.subject_name }}</td>
+      <td><form method="post" action="{{ url_for('delete_subject', subject_id=subject.id) }}" onsubmit="return confirm('Delete this subject and its attendance records?');"><button class="danger small" type="submit">Delete</button></form></td></tr>
+    {% endfor %}</tbody>
+  </table></div>
+  {% else %}<p class="empty">No subjects added yet.</p>{% endif %}
+</section>
+{% endblock %}

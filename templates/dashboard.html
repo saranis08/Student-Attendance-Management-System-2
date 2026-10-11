@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Dashboard | Student Attendance System{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div><h1>Dashboard</h1><p class="muted">Overview of your attendance system.</p></div>
+  <span class="date-pill">Today: {{ today }}</span>
+</div>
+<div class="cards">
+  <div class="stat-card"><span>Total students</span><strong>{{ student_count }}</strong></div>
+  <div class="stat-card"><span>Total subjects</span><strong>{{ subject_count }}</strong></div>
+  <div class="stat-card"><span>Attendance entries today</span><strong>{{ today_count }}</strong></div>
+  <div class="stat-card"><span>Marked present today</span><strong>{{ present_count }}</strong></div>
+</div>
+<section class="panel">
+  <h2>Quick start</h2>
+  <ol>
+    <li>Add students in <strong>Students</strong>.</li>
+    <li>Add subjects in <strong>Subjects</strong>.</li>
+    <li>Open <strong>Attendance</strong> and mark Present or Absent.</li>
+    <li>Open <strong>Reports</strong> to calculate each student's attendance percentage.</li>
+  </ol>
+</section>
+{% endblock %}

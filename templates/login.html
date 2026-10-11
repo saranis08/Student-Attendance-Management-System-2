@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Login | Student Attendance System{% endblock %}
+{% block content %}
+<section class="panel login-panel">
+  <h1>Welcome</h1>
+  <p class="muted">Sign in to manage student attendance.</p>
+  <form method="post" class="stack">
+    <label>Username
+      <input name="username" required autocomplete="username" placeholder="Enter username">
+    </label>
+    <label>Password
+      <input type="password" name="password" required autocomplete="current-password" placeholder="Enter password">
+    </label>
+    <button type="submit">Login</button>
+  </form>
+  <div class="demo-note"><strong>Demo login</strong><br>Username: <code>admin</code><br>Password: <code>admin123</code></div>
+</section>
+{% endblock %}

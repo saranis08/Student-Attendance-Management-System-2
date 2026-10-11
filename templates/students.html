@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Students | Student Attendance System{% endblock %}
+{% block content %}
+<h1>Student Management</h1>
+<p class="muted">Add students using a unique roll number.</p>
+<section class="panel">
+  <h2>Add student</h2>
+  <form method="post" class="form-grid">
+    <label>Roll number<input name="roll_no" required placeholder="e.g. 23CS001"></label>
+    <label>Student name<input name="name" required placeholder="Full name"></label>
+    <label>Department<input name="department" required placeholder="e.g. CSE"></label>
+    <label>Year
+      <select name="year" required>
+        <option value="">Choose year</option><option>1st Year</option><option>2nd Year</option><option>3rd Year</option><option>4th Year</option>
+      </select>
+    </label>
+    <div class="form-action"><button type="submit">Add Student</button></div>
+  </form>
+</section>
+<section class="panel">
+  <h2>Student list ({{ students|length }})</h2>
+  {% if students %}
+  <div class="table-wrap"><table>
+    <thead><tr><th>Roll number</th><th>Name</th><th>Department</th><th>Year</th><th>Action</th></tr></thead>
+    <tbody>{% for student in students %}
+      <tr><td>{{ student.roll_no }}</td><td>{{ student.name }}</td><td>{{ student.department }}</td><td>{{ student.year }}</td>
+      <td><form method="post" action="{{ url_for('delete_student', student_id=student.id) }}" onsubmit="return confirm('Delete this student and their attendance records?');"><button class="danger small" type="submit">Delete</button></form></td></tr>
+    {% endfor %}</tbody>
+  </table></div>
+  {% else %}<p class="empty">No students added yet.</p>{% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Attendance | Student Attendance System{% endblock %}
+{% block content %}
+<h1>Mark Attendance</h1>
+<p class="muted">Choose a subject and date. Existing records for that session will be loaded.</p>
+{% if not students or not subjects %}
+<section class="panel"><p>Please add at least one student and one subject before marking attendance.</p></section>
+{% else %}
+<section class="panel">
+  <form method="get" class="form-grid">
+    <label>Subject
+      <select name="subject_id" required>
+        <option value="">Choose subject</option>
+        {% for subject in subjects %}<option value="{{ subject.id }}" {% if selected_subject == subject.id|string %}selected{% endif %}>{{ subject.subject_code }} — {{ subject.subject_name }}</option>{% endfor %}
+      </select>
+    </label>
+    <label>Date<input type="date" name="attendance_date" value="{{ selected_date }}" required></label>
+    <div class="form-action"><button type="submit" class="secondary">Load session</button></div>
+  </form>
+</section>
+{% if selected_subject %}
+<section class="panel">
+  <form method="post">
+    <input type="hidden" name="subject_id" value="{{ selected_subject }}">
+    <input type="hidden" name="attendance_date" value="{{ selected_date }}">
+    <div class="table-wrap"><table>
+      <thead><tr><th>Roll number</th><th>Name</th><th>Attendance status</th></tr></thead>
+      <tbody>{% for student in students %}
+        <tr><td>{{ student.roll_no }}</td><td>{{ student.name }}</td><td>
+          <div class="radio-options">
+            <label><input type="radio" name="status_{{ student.id }}" value="Present" {% if existing.get(student.id, 'Present') == 'Present' %}checked{% endif %}> Present</label>
+            <label><input type="radio" name="status_{{ student.id }}" value="Absent" {% if existing.get(student.id) == 'Absent' %}checked{% endif %}> Absent</label>
+          </div>
+        </td></tr>
+      {% endfor %}</tbody>
+    </table></div>
+    <button type="submit">Save Attendance</button>
+  </form>
+</section>
+{% else %}
+<div class="notice">Choose a subject and date, then click <strong>Load session</strong>.</div>
+{% endif %}
+{% endif %}
+{% endblock %}
